@@ -19,7 +19,7 @@ if (Test-Path "$dbFolderWithStaiDB\blockchain_v2_mainnet.sqlite") {
 
 & $sqliteExe $staiDB "VACUUM INTO '$dbFolderWithStaiDB\blockchain_v2_mainnet.sqlite'"
 
-$dbFileCompressed = "D:\STAI\Torrent\blockchain_v2_mainnet.7z"
+$dbFileCompressed = "D:\STAI\StaiDB\blockchain_v2_mainnet.7z"
 
 $7zipExe = "C:\Program Files\7-Zip\7z.exe"
 
