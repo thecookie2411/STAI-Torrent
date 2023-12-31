@@ -1,0 +1,37 @@
+$logFile = "D:\STAI\Log\BackupStaiDB_Log.txt"
+
+$timeStarted = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
+
+Add-Content $logFile "Script started execution at: $timeStarted"
+
+$sqliteExePath = "D:\STAI\Sqlite"
+
+$sqliteExe = Join-Path $sqliteExePath "sqlite3.exe"
+
+$staiDB = "D:\STAI\DB\blockchain_v2_mainnet.sqlite"
+
+$dbFolderWithStaiDB = "D:\STAI\TempDB"
+
+
+if (Test-Path "$dbFolderWithStaiDB\blockchain_v2_mainnet.sqlite") {
+  Remove-Item -Path "$dbFolderWithStaiDB\blockchain_v2_mainnet.sqlite" -Force
+}
+
+& $sqliteExe $staiDB "VACUUM INTO '$dbFolderWithStaiDB\blockchain_v2_mainnet.sqlite'"
+
+$dbFileCompressed = "D:\STAI\Torrent\blockchain_v2_mainnet.7z"
+
+$7zipExe = "C:\Program Files\7-Zip\7z.exe"
+
+$argList = "a", $dbFileCompressed, "$dbFolderWithStaiDB\*"
+
+if (Test-Path $dbFileCompressed) {
+  Remove-Item -Path $dbFileCompressed -Force
+}
+
+Start-Process -FilePath $7zipExe -ArgumentList $argList -NoNewWindow -Wait
+
+Start-Sleep -Seconds 30
+
+$timeCompleted = Get-Date -Format 'yyyy-MM-dd HH:mm:ss'
+Add-Content $logFile "Script completed execution at: $timeCompleted"
